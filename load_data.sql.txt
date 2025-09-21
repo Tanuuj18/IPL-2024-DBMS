@@ -1,0 +1,29 @@
+ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ipl_2024_deliveries.csv'
+     INTO TABLE match_deliveries_2024
+     FIELDS TERMINATED BY ','
+     ENCLOSED BY '"'
+     LINES TERMINATED BY '\n'
+     IGNORE 1 ROWS;
+
+ ALTER TABLE ipl_matches_2024
+     MODIFY innings1_wickets INT NULL,
+     MODIFY innings2_wickets INT NULL;
+
+ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ipl_2024_matches.csv'
+     INTO TABLE ipl_matches_2024
+     FIELDS TERMINATED BY ','
+     ENCLOSED BY '"'
+     LINES TERMINATED BY '\n'
+     IGNORE 1 ROWS
+     (
+         match_id, season, date, match_no, venue, city,
+         team1, team2, toss_winner, toss_decision,
+         innings1_score, @innings1_wickets,
+         innings2_score, @innings2_wickets,
+         winning_team, margin, won_by,
+         player_of_the_match, team1_players, team2_players,
+         umpire1, umpire2, umpire3
+     )
+     SET
+         innings1_wickets = NULLIF(@innings1_wickets, ''),
+         innings2_wickets = NULLIF(@innings2_wickets, '');

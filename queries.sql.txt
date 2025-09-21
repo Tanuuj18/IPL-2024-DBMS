@@ -1,0 +1,33 @@
+1.Player who faced the most balls.
+
+SELECT striker, COUNT(*) AS balls_faced
+     FROM match_deliveries_2024
+     GROUP BY striker
+     ORDER BY balls_faced DESC
+     LIMIT 1;
+
+OUTPUT:
++---------+-------------+
+| striker | balls_faced |
++---------+-------------+
+| V Kohli |         497 |
++---------+-------------+
+
+2.Matches with highest combined scores.
+
+ SELECT match_id, innings1_score, innings2_score,
+            innings1_score + innings2_score AS total_score
+     FROM ipl_matches_2024
+     ORDER BY total_score DESC
+     LIMIT 5;
+
+OUTPUT:
++----------+----------------+----------------+-------------+
+| match_id | innings1_score | innings2_score | total_score |
++----------+----------------+----------------+-------------+
+|   202430 | 287.0          | 262.0          |         549 |
+|   202442 | 261.0          | 262.0          |         523 |
+|   202408 | 277.0          | 246.0          |         523 |
+|   202443 | 257.0          | 247.0          |         504 |
+|   202435 | 266.0          | 199.0          |         465 |
++----------+----------------+----------------+-------------+
