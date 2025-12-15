@@ -1,49 +1,75 @@
- CREATE TABLE match_deliveries_2024 (
-         match_id INT,
-         season INT,
-         match_no VARCHAR(10),
-         date DATE,
-         venue VARCHAR(100),
-         batting_team VARCHAR(50),
-         bowling_team VARCHAR(50),
-         innings INT,
-         `over` INT,
-         striker VARCHAR(50),
-         non_striker VARCHAR(50),
-         bowler VARCHAR(50),
-         runs_of_bat INT,
-         extras INT,
-         wide INT,
-         legbyes INT,
-         byes INT,
-         noballs INT,
-         wicket_type VARCHAR(30),
-         player_dismissed VARCHAR(50),
-         fielder VARCHAR(50)
-       );
+CREATE TABLE ipl_matches_2024 (
+    match_id INT PRIMARY KEY,
+    season INT NOT NULL,
+    date DATE NOT NULL,
+    match_no VARCHAR(20) NOT NULL,
+    venue VARCHAR(100),
+    city VARCHAR(50),
 
- CREATE TABLE ipl_matches_2024 (
-         match_id INT PRIMARY KEY,
-         season INT,
-         date DATE,
-         match_no VARCHAR(20),
-         venue VARCHAR(100),
-         city VARCHAR(50),
-         team1 VARCHAR(50),
-         team2 VARCHAR(50),
-         toss_winner VARCHAR(50),
-         toss_decision VARCHAR(10),
-         innings1_score VARCHAR(10),
-         innings1_wickets INT,
-         innings2_score VARCHAR(10),
-         innings2_wickets INT,
-         winning_team VARCHAR(50),
-         margin VARCHAR(20),
-         won_by VARCHAR(20),
-         player_of_the_match VARCHAR(50),
-         team1_players TEXT,
-         team2_players TEXT,
-         umpire1 VARCHAR(50),
-         umpire2 VARCHAR(50),
-         umpire3 VARCHAR(50)
-       );
+    team1 VARCHAR(50) NOT NULL,
+    team2 VARCHAR(50) NOT NULL,
+
+    toss_winner VARCHAR(50),
+    toss_decision VARCHAR(10) CHECK (toss_decision IN ('bat', 'field')),
+
+    innings1_score VARCHAR(10),
+    innings1_wickets INT CHECK (innings1_wickets BETWEEN 0 AND 10),
+
+    innings2_score VARCHAR(10),
+    innings2_wickets INT CHECK (innings2_wickets BETWEEN 0 AND 10),
+
+    winning_team VARCHAR(50),
+    margin VARCHAR(20),
+    won_by VARCHAR(20),
+
+    player_of_the_match VARCHAR(50),
+
+    team1_players TEXT,
+    team2_players TEXT,
+
+    umpire1 VARCHAR(50),
+    umpire2 VARCHAR(50),
+    umpire3 VARCHAR(50)
+);
+
+CREATE TABLE match_deliveries_2024 (
+    delivery_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    match_id INT NOT NULL,
+    season INT NOT NULL,
+    match_no VARCHAR(10),
+    date DATE,
+    venue VARCHAR(100),
+
+    batting_team VARCHAR(50) NOT NULL,
+    bowling_team VARCHAR(50) NOT NULL,
+
+    innings INT CHECK (innings IN (1, 2)),
+    `over` INT CHECK (`over` BETWEEN 0 AND 20),
+
+    striker VARCHAR(50),
+    non_striker VARCHAR(50),
+    bowler VARCHAR(50),
+
+    runs_of_bat INT DEFAULT 0 CHECK (runs_of_bat >= 0),
+    extras INT DEFAULT 0 CHECK (extras >= 0),
+
+    wide INT DEFAULT 0,
+    legbyes INT DEFAULT 0,
+    byes INT DEFAULT 0,
+    noballs INT DEFAULT 0,
+
+    wicket_type VARCHAR(30),
+    player_dismissed VARCHAR(50),
+    fielder VARCHAR(50),
+
+    CONSTRAINT fk_match
+        FOREIGN KEY (match_id)
+        REFERENCES ipl_matches_2024(match_id)
+        ON DELETE CASCADE
+);
+
+
+
+
+        
